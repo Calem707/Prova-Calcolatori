@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleziona un Calcolatore</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        a {
+            display: block;
+            padding: 15px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        a:hover {
+            background-color: #45a049;
+        }
+        .calcolatore {
+            display: none;
+        }
+        h3 {
+            margin-top: 0;
+        }
+        input[type="number"], select {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        input[type="number"].large {
+            height: 50px;
+        }
+        input[type="text"], input[type="button"] {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        input[type="text"].read-only {
+            background-color: #f0f0f0;
+            cursor: not-allowed;
+        }
+        .calcolatrice-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 10px;
+        }
+        input[type="button"] {
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        input[type="button"]:hover {
+            background-color: #005f6b;
+        }
+        #risultato {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .proporzioni {
+            display: flex;
+            flex-direction: column;
+        }
+        .input-group {
+            display: flex;
+        }
+        .input-group input[type="number"]{
+		margin-right: 10px;
+        }
+        .input-group label {
+            margin-right: 10px;
+		 font-size: 40px;
+        }
+        .calculate-button {
+            margin-top: 10px;
+        }
+        .calculate-button button {
+            padding: 15px 20px;
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .calculate-button button:hover {
+            background-color: #005f6b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Seleziona un Calcolatore</h2>
+        <ul>
+            <li><a href="#calcolatore1" onclick="mostraCalcolatore('calcolatore1')">Calcolatore Franchigia</a></li>
+            <li><a href="#calcolatore2" onclick="mostraCalcolatore('calcolatore2')">Calcolatrice</a></li>
+            <li><a href="#calcolatore3" onclick="mostraCalcolatore('calcolatore3')">Calcolatore Proporzioni</a></li>
+        </ul>
+        <div id="calcolatore1" class="calcolatore">
+            <h3>Calcolatore Franchigia</h3>
+            <input type="number" id="costo" class="large" placeholder="Inserisci l'importo della fattura...">
+            <select id="percentuale1">
+                <option value="10">10%</option>
+                <option value="20" selected>20%</option>
+                <option value="30">30%</option>
+                <option value="40">40%</option>
+                <option value="50">50%</option>
+            </select>
+            <input type="number" id="franchigia" placeholder="Inserire valore franchigia...">
+            <button onclick="calcolaPrezzo()">Calcola</button>
+            <div id="result"></div>
+        </div>
+        <div id="calcolatore2" class="calcolatore">
+            <h3>Calcolatrice</h3>
+            <input type="text" id="espressione" class="read-only" readonly placeholder="Inserisci l'espressione...">
+            <div class="calcolatrice-grid">
+                <input type="button" value="7" onclick="aggiungiNumero('7')">
+                <input type="button" value="8" onclick="aggiungiNumero('8')">
+                <input type="button" value="9" onclick="aggiungiNumero('9')">
+                <input type="button" value="/" onclick="aggiungiOperatore('/')">
+                <input type="button" value="4" onclick="aggiungiNumero('4')">
+                <input type="button" value="5" onclick="aggiungiNumero('5')">
+                <input type="button" value="6" onclick="aggiungiNumero('6')">
+                <input type="button" value="*" onclick="aggiungiOperatore('*')">
+                <input type="button" value="1" onclick="aggiungiNumero('1')">
+                <input type="button" value="2" onclick="aggiungiNumero('2')">
+                <input type="button" value="3" onclick="aggiungiNumero('3')">
+                <input type="button" value="-" onclick="aggiungiOperatore('-')">
+                <input type="button" value="0" onclick="aggiungiNumero('0')">
+                <input type="button" value="." onclick="aggiungiNumero('.')">
+                <input type="button" value="C" onclick="resetta()">
+                <input type="button" value="+" onclick="aggiungiOperatore('+')">
+            </div>
+            <input type="button" value="Calcola" onclick="calcola()">
+            <div id="risultato"></div>
+        </div>
+        <div id="calcolatore3" class="calcolatore">
+            <h3>Calcolatore Proporzioni</h3>
+            <div class="proporzioni">
+                <select id="incognita">
+                    <option value="x">Calcola X</option>
+                    <option value="y">Calcola Y</option>
+                    <option value="a">Calcola A</option>
+                    <option value="b">Calcola B</option>
+                </select>
+                <div class="input-group">
+                    <input type="number" id="x" placeholder="X">
+                    <label for="y"> : </label>
+                    <input type="number" id="y" placeholder="Y">
+                    <label for="a"> = </label>
+                    <input type="number" id="a" placeholder="A">
+                    <label for="b"> : </label>
+                    <input type="number" id="b" placeholder="B">
+                </div>
+            </div>
+            <div class="calculate-button">
+                <button class="btn-calcola" onclick="calcolaProporzioni()">Calcola</button>
+            </div>
+            <div id="result3"></div>
+        </div>
+    </div>
+    <script>
+        function mostraCalcolatore(id) {
+            var calcolatori = document.getElementsByClassName("calcolatore");
+            for (var i = 0; i < calcolatori.length; i++) {
+                calcolatori[i].style.display = "none";
+            }
+            document.getElementById(id).style.display = "block";
+        }
+
+        function calcolaPrezzo() {
+            var costoInput = document.getElementById("costo").value;
+            var costo = parseFloat(costoInput);
+            var percentualeInput = document.getElementById("percentuale1").value;
+            var percentuale = parseFloat(percentualeInput) / 100;
+            var franchigiaInput = document.getElementById("franchigia").value;
+            var franchigia = parseFloat(franchigiaInput);
+
+            if (costo > 0) {
+                var prezzoFinale = costo * percentuale;
+
+                if (prezzoFinale < franchigia) {
+                    prezzoFinale = franchigia;
+                }
+
+                document.getElementById("result").innerHTML = "Importo che deve pagare il paziente (Bollo escluso): " + prezzoFinale.toFixed(2);
+            } else {
+                document.getElementById("result").innerHTML = "Inserisci un importo valido";
+            }
+        }
+
+        function aggiungiNumero(numero) {
+            document.getElementById("espressione").value += numero;
+        }
+
+        function aggiungiOperatore(operatore) {
+            var espressione = document.getElementById("espressione").value;
+            if (espressione !== "" && !isNaN(espressione[espressione.length - 1])) {
+                document.getElementById("espressione").value += operatore;
+            }
+        }
+
+        function resetta() {
+            document.getElementById("espressione").value = "";
+        }
+
+        function calcola() {
+            var espressione = document.getElementById("espressione").value;
+            var risultato;
+            try {
+                risultato = eval(espressione);
+                document.getElementById("risultato").innerHTML = "Risultato: " + risultato;
+            } catch (error) {
+                document.getElementById("risultato").innerHTML = "Errore nell'espressione";
+            }
+        }
+
+        function calcolaProporzioni() {
+            var incognita = document.getElementById("incognita").value;
+            var x = parseFloat(document.getElementById("x").value);
+            var y = parseFloat(document.getElementById("y").value);
+            var a = parseFloat(document.getElementById("a").value);
+            var b = parseFloat(document.getElementById("b").value);
+
+            
+                var proporzioniX = (y * a) / b;
+                var proporzioniY = (b * x) / a;
+                var proporzioniA = (b * x) / y;
+                var proporzioniB = (y * a) / x;
+
+                var risultato;
+                switch (incognita) {
+                    case 'x':
+if ((!isNaN(y) && !isNaN(a) && !isNaN(b) && y >= 0 && a >= 0 && b >= 0)){
+                        risultato = proporzioniX;}else {
+                document.getElementById("result3").innerHTML = "Inserisci valori validi per X, Y, A e B"; 
+break;}
+                        break;
+                    case 'y':
+if (!isNaN(x) && !isNaN(a) && !isNaN(b) && x >= 0 && a >= 0 && b >= 0){
+                        risultato = proporzioniY;}else{
+                document.getElementById("result3").innerHTML = "Inserisci valori validi per X, Y, A e B";
+break;}
+                        break;
+                    case 'a':
+if (!isNaN(x) && !isNaN(y) && !isNaN(b) && x >= 0 && y >= 0 && b >= 0){
+                        risultato = proporzioniA;}else{
+                document.getElementById("result3").innerHTML = "Inserisci valori validi per X, Y, A e B"; 
+break;}
+                        break;
+                    case 'b':
+if (!isNaN(x) && !isNaN(y) && !isNaN(a) && x >= 0 && y >= 0 && a >= 0){
+                        risultato = proporzioniB;}else{
+                document.getElementById("result3").innerHTML = "Inserisci valori validi per X, Y, A e B"; 
+break;}
+                        break;}
+                document.getElementById("result3").innerHTML = "Risultato: " + risultato.toFixed(2);
+            } 
+        
+    </script>
+</body>
+</html>
